@@ -5,7 +5,7 @@ export PARENT_DIR=`readlink -f ..`
 export USE_SEC_FIPS_MODE=true
 # export CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf-
 # export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.7.4-2014.04/bin/arm-gnueabi-
-export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.9.2-2014.10/bin/arm-cortex_a15-linux-gnueabihf-
+export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.9.3-2014.11/bin/arm-cortex_a15-linux-gnueabihf-
 
 # if [ "${1}" != "" ];then
 #  export KERNELDIR=`readlink -f ${1}`
@@ -35,7 +35,7 @@ make 0googymax3_cm_defconfig VARIANT_DEFCONFIG=jf_eur_defconfig SELINUX_DEFCONFI
 . $KERNELDIR/.config
 
 cd $KERNELDIR/
-make -j4 || exit 1
+make -j3 || exit 1
 
 #remove previous ramfs files
 rm -rf $RAMFS_TMP
