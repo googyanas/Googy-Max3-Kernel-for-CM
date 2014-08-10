@@ -15,6 +15,7 @@
 #ifdef CONFIG_USB_HOST_NOTIFY
 #include "../../arch/arm/mach-msm/board-8064.h"
 #endif
+#include <linux/fastchg.h>
 
 #define ENABLE 1
 #define DISABLE 0
