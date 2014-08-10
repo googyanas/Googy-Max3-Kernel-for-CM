@@ -31,7 +31,7 @@ make 0googymax3_cm_defconfig VARIANT_DEFCONFIG=jf_eur_defconfig SELINUX_DEFCONFI
 . $KERNELDIR/.config
 
 cd $KERNELDIR/
-make -j3 || exit 1
+make -j2 || exit 1
 
 #remove previous ramfs files
 rm -rf $RAMFS_TMP
@@ -68,4 +68,4 @@ mv -f -v /home/googy/Anas/Googy-Max3-Kernel/Kernel_cm/boot.img /home/googy/Anas/
 cd /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM.CWM
 zip -v -r ../GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip .
 
-adb push /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard1/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip
+adb push /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard1/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip  || adb push /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard0/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip
