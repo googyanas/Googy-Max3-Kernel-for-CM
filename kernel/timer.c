@@ -1689,6 +1689,7 @@ static int __cpuinit init_timers_cpu(int cpu)
 			boot_done = 1;
 			base = &boot_tvec_bases;
 		}
+		spin_lock_init(&base->lock);
 		tvec_base_done[cpu] = 1;
 	} else {
 		base = per_cpu(tvec_bases, cpu);
@@ -1696,7 +1697,6 @@ static int __cpuinit init_timers_cpu(int cpu)
 
 	if ((*lock_init) != cpu) {
 		*lock_init = cpu;
-		spin_lock_init(&base->lock);
 		printk(KERN_INFO "tvec base lock initialized for cpu%d\n", cpu);
 	}
 
