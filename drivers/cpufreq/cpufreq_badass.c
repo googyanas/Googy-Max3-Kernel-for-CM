@@ -878,16 +878,13 @@ static void bds_check_cpu(struct cpu_bds_info_s *this_bds_info)
 		cur_idle_time = get_cpu_idle_time(j, &cur_wall_time);
 		cur_iowait_time = get_cpu_iowait_time(j, &cur_wall_time);
 
-		wall_time = (unsigned int) cputime64_sub(cur_wall_time,
-				j_bds_info->prev_cpu_wall);
+		wall_time = (unsigned int) (cur_wall_time - j_bds_info->prev_cpu_wall);
 		j_bds_info->prev_cpu_wall = cur_wall_time;
 
-		idle_time = (unsigned int) cputime64_sub(cur_idle_time,
-				j_bds_info->prev_cpu_idle);
+		idle_time = (unsigned int) (cur_idle_time - j_bds_info->prev_cpu_idle);
 		j_bds_info->prev_cpu_idle = cur_idle_time;
 
-		iowait_time = (unsigned int) cputime64_sub(cur_iowait_time,
-				j_bds_info->prev_cpu_iowait);
+		iowait_time = (unsigned int) (cur_iowait_time - j_bds_info->prev_cpu_iowait);
 		j_bds_info->prev_cpu_iowait = cur_iowait_time;
 
 		if (bds_tuners_ins.ignore_nice) {
