@@ -2,7 +2,7 @@
  
 cat << ENDCONFIG
 <settingsRoot>
-
+ 
   <settingsTab name="CPU">
 
     <settingsPane name="CPU Clock Control"
