@@ -291,7 +291,7 @@ struct kgsl_device_waittimestamp_ctxtid {
  * timestamp is a returned counter value which can be passed to
  * other ioctls to determine when the commands have been executed by
  * the GPU.
- *
+ */
 struct kgsl_ringbuffer_issueibcmds {
 	unsigned int drawctxt_id;
 	unsigned int ibdesc_addr;
