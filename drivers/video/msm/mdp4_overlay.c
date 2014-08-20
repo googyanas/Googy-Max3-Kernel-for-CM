@@ -2807,7 +2807,6 @@ static int mdp4_overlay_req2pipe(struct mdp_overlay *req, int mixer,
 
 	pipe->transp = req->transp_mask;
 
-
 	if ((pipe->flags & MDP_SECURE_OVERLAY_SESSION) &&
 		(!(req->flags & MDP_SECURE_OVERLAY_SESSION))) {
 		pr_err("%s Switch secure %d", __func__, pipe->pipe_ndx);
@@ -3166,7 +3165,7 @@ int mdp4_calc_blt_mdp_bw(struct msm_fb_data_type *mfd,
 		quota * mdp_bw_ab_factor / 100;
 
 	perf_req->mdp_ov_ib_bw[pipe->mixer_num] =
-		quota * mdp_bw_ab_factor / 100;
+		quota * mdp_bw_ib_factor / 100;
 
 	perf_req->mdp_ov_ab_bw[pipe->mixer_num] <<= shift;
 	perf_req->mdp_ov_ib_bw[pipe->mixer_num] <<= shift;
