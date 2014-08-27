@@ -31,7 +31,7 @@ make 0googymax3_cm_defconfig VARIANT_DEFCONFIG=jf_eur_defconfig SELINUX_DEFCONFI
 . $KERNELDIR/.config
 
 cd $KERNELDIR/
-make -j3 || exit 1
+make -j5 || exit 1
 
 #remove previous ramfs files
 rm -rf $RAMFS_TMP
