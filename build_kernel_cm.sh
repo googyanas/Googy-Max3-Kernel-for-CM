@@ -3,7 +3,7 @@ export KERNELDIR=`readlink -f .`
 export RAMFS_SOURCE="/home/googy/Anas/Googy-Max3-Kernel/Kernel_cm/ramfs_cm"
 export PARENT_DIR=`readlink -f ..`
 export USE_SEC_FIPS_MODE=true
-export CROSS_COMPILE=/usr/bin/arm-linux-gnu-
+export CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf-
 # export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.7.4-2014.04/bin/arm-gnueabi-
 # export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.9.1-2014.07/bin/arm-cortex_a15-linux-gnueabihf-
 
@@ -66,6 +66,6 @@ cd -
 cd /home/googy/Anas/Googy-Max3-Kernel
 mv -f -v /home/googy/Anas/Googy-Max3-Kernel/Kernel_cm/boot.img /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM.CWM/boot.img
 cd /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM.CWM
-zip -v -r ../GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip .
+zip -v -r ../GoogyMax3_CM-Kernel_${1}_CWM.zip .
 
-adb push /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard1/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip  || adb push /home/googy/Anas/Googy-Max3-Kernel/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard0/GT-I9505_GoogyMax3_CM-Kernel_${1}_CWM.zip
+adb push /home/googy/Anas/Googy-Max3-Kernel/GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard1/GoogyMax3_CM-Kernel_${1}_CWM.zip || adb push /home/googy/Anas/Googy-Max3-Kernel/GoogyMax3_CM-Kernel_${1}_CWM.zip /storage/sdcard0/GoogyMax3_CM-Kernel_${1}_CWM.zip
