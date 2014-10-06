@@ -442,3 +442,4 @@ obj-$(CONFIG_BT_BCM4335) += board-bluetooth-bcm4335.o
 
 obj-$(CONFIG_CPU_FREQ_MSM) += cpufreq.o
 obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
+obj-$(CONFIG_HAS_MACH_MEMUTILS) += memutils/
