@@ -826,7 +826,7 @@ static ssize_t mipi_samsung_auto_brightness_show(struct device *dev,
 
 	rc = snprintf((char *)buf, (int)sizeof(buf), "%d\n",
 			msd.dstat.auto_brightness);
-	pr_info("auto_brightness: %d\n", *buf);
+	pr_info("auot_brightness: %d\n", *buf);
 
 	return rc;
 }
