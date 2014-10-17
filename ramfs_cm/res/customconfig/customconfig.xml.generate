@@ -99,7 +99,7 @@ cat << ENDCONFIG
     <settingsPane name="GPU Clock Control"
 	      description="GPU Clock control">		  
       
-       <spinner description="Default GPU governor" name="Default CPU Governor" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/trustzone/governor">
+       <spinner description="Default GPU governor" name="Default GPU Governor" action="generic /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/pwrscale/trustzone/governor">
              <spinnerItem name="OnDemand" value="ondemand"/> 
              <spinnerItem name="Simple" value="simple"/> 
        </spinner>

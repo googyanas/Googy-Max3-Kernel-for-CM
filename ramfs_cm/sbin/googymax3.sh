@@ -22,7 +22,7 @@ $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
-	mkdir -p /system/etc/init.d/
+	mkdir -p /system/etc/init.d/;
 	$BB chmod 755 /system/etc/init.d/;
 fi;
 
@@ -33,15 +33,27 @@ fi;
 
 	# run ROM scripts
 	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-		 /system/bin/sh /system/etc/init.qcom.post_boot.sh
+		 /system/bin/sh /system/etc/init.qcom.post_boot.sh;
 	else
-		$BB echo "No ROM Boot script detected"
+		$BB echo "No ROM Boot script detected";
 	fi;
 
-	$BB mv /data/init.d_bkp/* /system/etc/init.d/
+	$BB mv /data/init.d_bkp/* /system/etc/init.d/;
 
 sleep 5;
 OPEN_RW;
+
+# some nice thing for dev
+if [ ! -e /cpufreq ]; then
+	$BB ln -s /sys/devices/system/cpu/cpu0/cpufreq /cpufreq;
+	$BB ln -s /sys/devices/system/cpu/cpufreq/ /cpugov;
+	$BB ln -s /sys/module/msm_thermal/parameters/ /cputemp;
+fi;
+
+# cleaning
+$BB rm -rf /cache/lost+found/* 2> /dev/null;
+$BB rm -rf /data/lost+found/* 2> /dev/null;
+$BB rm -rf /data/tombstones/* 2> /dev/null;
 
 CRITICAL_PERM_FIX()
 {
@@ -56,39 +68,53 @@ CRITICAL_PERM_FIX()
 	$BB chmod -R 06755 /sbin/ext/;
 	$BB chmod -R 0777 /data/anr/;
 	$BB chmod -R 0400 /data/tombstones;
-	$BB chmod 06755 /sbin/busybox
+	$BB chmod 06755 /sbin/busybox;
 }
 CRITICAL_PERM_FIX;
 
 # oom and mem perm fix
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
-$BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree
+$BB chmod 666 /sys/module/lowmemorykiller/parameters/minfree;
 
 # make sure we own the device nodes
-$BB chown system /sys/devices/system/cpu/cpu0/cpufreq/*
-$BB chown system /sys/devices/system/cpu/cpu1/online
-$BB chown system /sys/devices/system/cpu/cpu2/online
-$BB chown system /sys/devices/system/cpu/cpu3/online
-$BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-$BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-$BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-$BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
-$BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*
-$BB chmod 666 /sys/devices/system/cpu/cpu1/online
-$BB chmod 666 /sys/devices/system/cpu/cpu2/online
-$BB chmod 666 /sys/devices/system/cpu/cpu3/online
-$BB chmod 666 /sys/module/msm_thermal/parameters/*
-$BB chmod 666 /sys/module/msm_thermal/core_control/enabled
-$BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk
-$BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
+$BB chown system /sys/devices/system/cpu/cpu0/cpufreq/*;
+$BB chown system /sys/devices/system/cpu/cpu1/online;
+$BB chown system /sys/devices/system/cpu/cpu2/online;
+$BB chown system /sys/devices/system/cpu/cpu3/online;
+$BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+$BB chown system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+$BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+$BB chown system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+$BB chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+$BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq;
+$BB chmod 444 /sys/devices/system/cpu/cpu0/cpufreq/stats/*;
+$BB chmod 666 /sys/devices/system/cpu/cpu1/online;
+$BB chmod 666 /sys/devices/system/cpu/cpu2/online;
+$BB chmod 666 /sys/devices/system/cpu/cpu3/online;
+$BB chmod 666 /sys/module/msm_thermal/parameters/*;
+$BB chmod 666 /sys/module/msm_thermal/core_control/enabled;
+$BB chmod 666 /sys/class/kgsl/kgsl-3d0/max_gpuclk;
+$BB chmod 666 /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor;
 
 $BB chown -R root:root /data/property;
-$BB chmod -R 0700 /data/property
+$BB chmod -R 0700 /data/property;
+
+# set ondemand GPU governor as default
+echo "ondemand" > /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor;
+
+# make sure our max gpu clock is set via sysfs
+echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk;
 
 # set min max boot freq to default.
 echo "1890000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+echo "1890000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
+echo "1890000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
+echo "1890000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
 echo "384000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+echo "384000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
+echo "384000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
+echo "384000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
 
 if [ ! -d /data/.googymax3 ]; then
 	$BB mkdir -p /data/.googymax3;
@@ -115,11 +141,20 @@ read_config;
 
 # cpu
 echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+echo "$scaling_governor" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor;
+echo "$scaling_governor" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor;
+echo "$scaling_governor" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor;
 echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq;
+echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq;
+echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq;
 echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq;
+echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq;
+echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq;
 
 # zram isn't used so ...
-# echo "0" > /proc/sys/vm/swappiness;
+echo "0" > /proc/sys/vm/swappiness;
 
 # dynamic fsync
 if [ "$Dyn_fsync_active" == "on" ];then
@@ -149,9 +184,9 @@ fi;
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # apply STweaks defaults
-export CONFIG_BOOTING=1
-/res/uci.sh apply
-export CONFIG_BOOTING=
+export CONFIG_BOOTING=1;
+/res/uci.sh apply;
+export CONFIG_BOOTING=;
 
 OPEN_RW;
 
@@ -165,7 +200,7 @@ OPEN_RW;
 	# ROOT activation if supersu used
 	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
 		if [ "$(pgrep -f "/system/xbin/daemonsu" | wc -l)" -eq "0" ]; then
-			/system/xbin/daemonsu --auto-daemon &
+			/system/xbin/daemonsu --auto-daemon &;
 		fi;
 	fi;
 
