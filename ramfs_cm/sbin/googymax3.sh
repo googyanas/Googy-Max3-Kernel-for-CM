@@ -22,7 +22,7 @@ $BB echo "row" > /sys/block/mmcblk0/queue/scheduler;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
-	mkdir -p /system/etc/init.d/;
+	mkdir -p /system/etc/init.d/
 	$BB chmod 755 /system/etc/init.d/;
 fi;
 
@@ -33,12 +33,12 @@ fi;
 
 	# run ROM scripts
 	if [ -e /system/etc/init.qcom.post_boot.sh ]; then
-		 /system/bin/sh /system/etc/init.qcom.post_boot.sh;
+		 /system/bin/sh /system/etc/init.qcom.post_boot.sh
 	else
-		$BB echo "No ROM Boot script detected";
+		$BB echo "No ROM Boot script detected"
 	fi;
 
-	$BB mv /data/init.d_bkp/* /system/etc/init.d/;
+	$BB mv /data/init.d_bkp/* /system/etc/init.d/
 
 sleep 5;
 OPEN_RW;
@@ -101,10 +101,10 @@ $BB chown -R root:root /data/property;
 $BB chmod -R 0700 /data/property;
 
 # set ondemand GPU governor as default
-echo "ondemand" > /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor;
+echo "ondemand" > /sys/devices/platform/kgsl-3d0/kgsl/kgsl-3d0/pwrscale/trustzone/governor
 
 # make sure our max gpu clock is set via sysfs
-echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk;
+echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
 
 # set min max boot freq to default.
 echo "1890000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
@@ -184,25 +184,34 @@ fi;
 echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # apply STweaks defaults
-export CONFIG_BOOTING=1;
-/res/uci.sh apply;
-export CONFIG_BOOTING=;
+export CONFIG_BOOTING=1
+/res/uci.sh apply
+export CONFIG_BOOTING=
 
 OPEN_RW;
 
-# (
-	# Start any init.d scripts that may be present in the rom or added by the user
-#	if [ "$init_d" == "on" ]; then
-		$BB chmod 755 /system/etc/init.d/*;
-		$BB run-parts /system/etc/init.d/;
-#	fi;
+if [ -d /system/etc/init.d ]; then
+  /sbin/busybox chmod 755 /system/etc/init.d/*
+  /sbin/busybox run-parts /system/etc/init.d
+fi
 
-	# ROOT activation if supersu used
-	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
-		if [ "$(pgrep -f "/system/xbin/daemonsu" | wc -l)" -eq "0" ]; then
-			/system/xbin/daemonsu --auto-daemon &;
-		fi;
+# ROOT activation if supersu used
+if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
+	if [ "$(pgrep -f "/system/xbin/daemonsu" | wc -l)" -eq "0" ]; then
+		/system/xbin/daemonsu --auto-daemon &
 	fi;
+fi;
+
+if [ -f /system/app/STweaks.apk ] || [ -f /data/app/STweaks.apk ] ; then
+	$BB rm -f /system/app/STweaks.apk > /dev/null 2>&1;
+	$BB rm -f /data/app/STweaks.apk > /dev/null 2>&1;
+	$BB rm -f /system/app/STweaks_Googy-Max.apk > /dev/null 2>&1;
+	$BB rm -f /data/app/com.gokhanmoral.stweaks* > /dev/null 2>&1;
+	$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
+	$BB cp /res/STweaks_Googy-Max.apk /system/app/;
+	$BB chown root.root /system/app/STweaks_Googy-Max.apk;
+	$BB chmod 644 /system/app/STweaks_Googy-Max.apk;
+fi;
 
 if [ ! -f /system/app/STweaks_Googy-Max.apk ] ; then
 	$BB rm -f /system/app/STweaks.apk > /dev/null 2>&1;
