@@ -13,9 +13,9 @@ export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.9.2-2014.10/bin/arm-cortex_a1
 
 RAMFS_TMP="/home/googy/Anas/tmp_cm/ramfs_cm"
 
-+VER="\"-GoogyMax3_CM-v$1\""
-+cp -f /home/googy/Anas/Googy-Max3-Kernel/Kernel/arch/arm/configs/0googymax3_cm_defconfig /home/googy/Anas/Googy-Max3-Kernel/0googymax3_cm_defconfig
-+sed "s#^CONFIG_LOCALVERSION=.*#CONFIG_LOCALVERSION=$VER#" /home/googy/Anas/Googy-Max3-Kernel/0googymax3_cm_defconfig > /home/googy/Anas/Googy-Max3-Kernel/Kernel/arch/arm/configs/0googymax3_cm_defconfig
+VER="\"-GoogyMax3_CM-v$1\""
+cp -f /home/googy/Anas/Googy-Max3-Kernel/Kernel_cm/arch/arm/configs/0googymax3_cm_defconfig /home/googy/Anas/Googy-Max3-Kernel/0googymax3_cm_defconfig
+sed "s#^CONFIG_LOCALVERSION=.*#CONFIG_LOCALVERSION=$VER#" /home/googy/Anas/Googy-Max3-Kernel/0googymax3_cm_defconfig > /home/googy/Anas/Googy-Max3-Kernel/Kernel_cm/arch/arm/configs/0googymax3_cm_defconfig
 
 if [ "${2}" = "x" ];then
  make mrproper || exit 1
