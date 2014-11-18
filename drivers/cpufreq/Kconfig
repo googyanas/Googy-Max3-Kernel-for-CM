@@ -166,6 +166,11 @@ config CPU_FREQ_DEFAULT_GOV_NIGHTMARE
   select CPU_FREQ_GOV_NIGHTMARE
   help
 
+config CPU_FREQ_DEFAULT_GOV_ZZMOOVE
+  bool "zzmoove"
+  select CPU_FREQ_GOV_ZZMOOVE
+  help
+
 config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
 	bool "smartassH3"
 	select CPU_FREQ_GOV_SMARTASSH3
@@ -398,6 +403,10 @@ config CPUFREQ_LIMIT_MAX_FREQ
 
 config CPU_FREQ_GOV_NIGHTMARE
 	tristate "'nightmare' cpufreq governor"
+	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_ZZMOOVE
+	tristate "'zzmoove' cpufreq governor"
 	depends on CPU_FREQ
 
 config CPU_FREQ_GOV_SMARTASSH3
