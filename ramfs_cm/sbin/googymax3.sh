@@ -142,6 +142,12 @@ fi;
 
 $BB chmod -R 0777 /data/.googymax3/;
 
+$BB rm -f /data/.googymax3/vdd_levels.ggy;
+$BB cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels > /data/.googymax3/vdd_levels.ggy
+
+$BB rm -f /data/.googymax3/GPU_mV_table.ggy;
+$BB cat /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table > /data/.googymax3/GPU_mV_table.ggy
+
 . /res/customconfig/customconfig-helper;
 
 ccxmlsum=`md5sum /res/customconfig/customconfig.xml | awk '{print $1}'`
@@ -210,9 +216,6 @@ fi
 
 # CPU Voltage Control Switch
 
-$BB rm -f /data/.googymax3/vdd_levels.ggy;
-cat /sys/devices/system/cpu/cpufreq/vdd_table/vdd_levels > /data/.googymax3/vdd_levels.ggy;
-
 if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 
 	newvolt15=$(( $(grep 384000 /data/.googymax3/vdd_levels.ggy | awk '{print $2}') + ($CPUVOLT15) ))
@@ -250,9 +253,6 @@ if [ "$CONTROLSWITCH_CPU" == "on" ]; then
 fi
 
 # GPU Voltage Control Switch
-
-$BB rm -f /data/.googymax3/GPU_mV_table.ggy;
-cat /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table > /data/.googymax3/GPU_mV_table.ggy;
 
 if [ "$CONTROLSWITCH_GPU" == "on" ]; then
 
