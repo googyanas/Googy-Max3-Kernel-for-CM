@@ -3004,6 +3004,12 @@ config FORCE_FAST_CHARGE
 	  are detected as USB to charge as AC (1A/h) or to set
 	  custom charging currents for AC and USB.
 
+config GED_BUILD
+	bool "Use Google Experience Device"
+	default n
+	help
+	Use Google Experience Device.
+
 config SEC_FACTORY
 	bool "Enable FACTORY Features"
 	default n
@@ -3016,4 +3022,7 @@ config HAS_MACH_MEMUTILS
 	help
 	Faster memcpy performance for Krait
 
+config SAMSUNG_PRODUCT_SHIP
+	bool "set up for product shipping"
+	default n
 endif
