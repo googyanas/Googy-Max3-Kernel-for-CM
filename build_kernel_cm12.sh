@@ -1,11 +1,11 @@
 #!/bin/sh
 export KERNELDIR=`readlink -f .`
-export RAMFS_SOURCE="/home/googy/Anas/Googy-Max3-Kernel/Kernel_cm/ramfs_cm12"
+export RAMFS_SOURCE="/home/googy/Anas/Ramdisks/ramfs_cm12"
 export PARENT_DIR=`readlink -f ..`
 export USE_SEC_FIPS_MODE=true
 # export CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf-
 # export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.7.4-2014.04/bin/arm-gnueabi-
-export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.9.3-2014.11/bin/arm-cortex_a15-linux-gnueabihf-
+export CROSS_COMPILE=/home/googy/Anas/linaro_a15_4.9.3-2014.12/bin/arm-cortex_a15-linux-gnueabihf-
 
 # if [ "${1}" != "" ];then
 #  export KERNELDIR=`readlink -f ${1}`
@@ -35,12 +35,13 @@ make 0googymax3_cm12_defconfig VARIANT_DEFCONFIG=jf_eur_defconfig SELINUX_DEFCON
 . $KERNELDIR/.config
 
 cd $KERNELDIR/
-make -j3 || exit 1
+make -j4 || exit 1
 
 #remove previous ramfs files
 rm -rf $RAMFS_TMP
 rm -rf $RAMFS_TMP.cpio
 rm -rf $RAMFS_TMP.cpio.gz
+rm -rf $RAMFS_TMP/*
 #copy ramfs files to tmp directory
 cp -ax $RAMFS_SOURCE $RAMFS_TMP
 #clear git repositories in ramfs
@@ -49,7 +50,6 @@ find $RAMFS_TMP -name .git -exec rm -rf {} \;
 # find $RAMFS_TMP -name .orig -exec rm -rf {} \;
 #remove empty directory placeholders
 find $RAMFS_TMP -name EMPTY_DIRECTORY -exec rm -rf {} \;
-rm -rf $RAMFS_TMP/tmp3/*
 #remove mercurial repository
 rm -rf $RAMFS_TMP/.hg
 #copy modules into ramfs
