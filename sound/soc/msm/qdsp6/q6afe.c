@@ -1806,9 +1806,8 @@ int afe_close(int port_id)
 				__func__, pcm_afe_instance[port_id & 0x1]);
 		port_id = VIRTUAL_ID_TO_PORTID(port_id);
 		pcm_afe_instance[port_id & 0x1]--;
-		if ((!(pcm_afe_instance[port_id & 0x1] == 0 &&
-			proxy_afe_instance[port_id & 0x1] == 0)) ||
-			afe_close_done[port_id & 0x1] == true)
+		if (!(pcm_afe_instance[port_id & 0x1] == 0 &&
+			proxy_afe_instance[port_id & 0x1] == 0))
 			return 0;
 		else
 			afe_close_done[port_id & 0x1] = true;
@@ -1820,9 +1819,8 @@ int afe_close(int port_id)
 				__func__, proxy_afe_instance[port_id & 0x1]);
 		port_id = VIRTUAL_ID_TO_PORTID(port_id);
 		proxy_afe_instance[port_id & 0x1]--;
-		if ((!(pcm_afe_instance[port_id & 0x1] == 0 &&
-			proxy_afe_instance[port_id & 0x1] == 0)) ||
-			afe_close_done[port_id & 0x1] == true)
+		if (!(pcm_afe_instance[port_id & 0x1] == 0 &&
+			proxy_afe_instance[port_id & 0x1] == 0))
 			return 0;
 		else
 			afe_close_done[port_id & 0x1] = true;

@@ -1333,11 +1333,9 @@ static struct platform_device lvds_frc_panel_device = {
 	}
 };
 
-static int dsi2lvds_gpio[4] = {
+static int dsi2lvds_gpio[2] = {
 	LPM_CHANNEL,/* Backlight PWM-ID=0 for PMIC-GPIO#24 */
-	0x1F08, /* DSI2LVDS Bridge GPIO Output, mask=0x1f, out=0x08 */
-	-1,
-	-1
+	0x1F08 /* DSI2LVDS Bridge GPIO Output, mask=0x1f, out=0x08 */
 };
 static struct msm_panel_common_pdata mipi_dsi2lvds_pdata = {
 	.gpio_num = dsi2lvds_gpio,
